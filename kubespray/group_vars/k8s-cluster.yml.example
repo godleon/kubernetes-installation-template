@@ -1,0 +1,124 @@
+kube_config_dir: /etc/kubernetes
+kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
+kube_manifest_dir: "{{ kube_config_dir }}/manifests"
+
+kube_cert_dir: "{{ kube_config_dir }}/ssl"
+
+kube_token_dir: "{{ kube_config_dir }}/tokens"
+
+kube_users_dir: "{{ kube_config_dir }}/users"
+
+kube_api_anonymous_auth: true
+
+kube_version: v1.10.4
+
+local_release_dir: "/tmp/releases"
+retry_stagger: 5
+
+kube_cert_group: kube-cert
+
+kube_log_level: 2
+
+kube_api_pwd: "{{ lookup('password', inventory_dir + '/credentials/kube_user.creds length=15 chars=ascii_letters,digits') }}"
+kube_users:
+  kube:
+    pass: "{{kube_api_pwd}}"
+    role: admin
+    groups:
+      - system:masters
+
+
+kube_network_plugin: calico
+
+weave_password: "password"
+
+weave_mode_seed: false
+
+weave_seed: uninitialized
+weave_peers: uninitialized
+
+weave_mtu: 1376
+
+enable_network_policy: false
+
+kube_service_addresses: 10.233.0.0/18
+
+kube_pods_subnet: 10.233.64.0/18
+
+kube_network_node_prefix: 24
+
+kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
+kube_apiserver_port: 6443 # (https)
+kube_apiserver_insecure_port: 8080 # (http)
+
+kube_proxy_mode: iptables
+
+kube_encrypt_secret_data: false
+
+cluster_name: cluster.local
+ndots: 2
+dns_mode: kubedns
+
+resolvconf_mode: docker_dns
+deploy_netchecker: false
+skydns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(3)|ipaddr('address') }}"
+skydns_server_secondary: "{{ kube_service_addresses|ipaddr('net')|ipaddr(4)|ipaddr('address') }}"
+dnsmasq_dns_server: "{{ kube_service_addresses|ipaddr('net')|ipaddr(2)|ipaddr('address') }}"
+dns_domain: "{{ cluster_name }}"
+
+docker_daemon_graph: "/var/lib/docker"
+
+
+docker_options: "--insecure-registry={{ kube_service_addresses }} --graph={{ docker_daemon_graph }}  {{ docker_log_opts }}"
+docker_bin_dir: "/usr/bin"
+
+docker_mount_flags:
+
+etcd_deployment_type: docker
+kubelet_deployment_type: host
+vault_deployment_type: docker
+helm_deployment_type: host
+
+k8s_image_pull_policy: IfNotPresent
+
+dashboard_enabled: false
+
+efk_enabled: false
+
+helm_enabled: false
+
+istio_enabled: false
+
+registry_enabled: false
+
+local_volume_provisioner_enabled: false
+
+ingress_nginx_enabled: false
+
+cert_manager_enabled: false
+
+persistent_volumes_enabled: false
+
+volume_cross_zone_attachment: false
+
+
+# User defined configuration
+kubeconfig_localhost: true
+kubelet_max_pods: 110
+
+# CephFS provisioner deployment
+cephfs_provisioner_enabled: false
+# cephfs_provisioner_namespace: "cephfs-provisioner"
+# cephfs_provisioner_cluster: ceph
+# cephfs_provisioner_monitors:
+#   - 10.103.2.24:6789
+#   - 10.103.2.27:6789
+#   - 10.103.2.28:6789
+#   - 10.103.2.30:6789
+#   - 10.103.2.31:6789
+#   - 10.103.2.32:6789
+#   - 10.103.2.38:6789
+#   - 10.103.2.39:6789
+# cephfs_provisioner_admin_id: admin
+# cephfs_provisioner_secret: AQDs+JhazQYfFhAAbNe3Zf6/hUEvHiEUPz2NXQ==
+# cephfs_provisioner_storage_class: cephfs

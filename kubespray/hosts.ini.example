@@ -1,0 +1,31 @@
+kube-ingress0   ansible_host=10.103.10.41   ip=10.103.10.41
+kube-ingress1   ansible_host=10.103.10.42   ip=10.103.10.42
+
+kube-master0    ansible_host=10.103.10.51   ip=10.103.10.51
+kube-master1    ansible_host=10.103.10.52   ip=10.103.10.52
+kube-master2    ansible_host=10.103.10.53   ip=10.103.10.53
+
+kube-worker0    ansible_host=10.103.10.61   ip=10.103.10.61
+kube-worker1    ansible_host=10.103.10.62   ip=10.103.10.62
+kube-worker2    ansible_host=10.103.10.63   ip=10.103.10.63
+
+# ## configure a bastion host if your nodes are not directly reachable
+# bastion ansible_host=x.x.x.x ansible_user=some_user
+
+[kube-master]
+kube-master[0:2]
+
+[etcd]
+kube-master[0:2]
+
+[kube-node]
+kube-worker[0:2]
+kube-ingress[0:1]
+
+[kube-ingress]
+kube-ingress[0:1]
+
+[k8s-cluster:children]
+kube-master
+kube-node
+kube-ingress
