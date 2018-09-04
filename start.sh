@@ -7,5 +7,5 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update
 sudo apt-get install -y docker-ce
 
-docker run --rm -v $(pwd):/k8s-deploy ubuntu:xenial bash -c "cd /k8s-deploy; bash install-k8s.sh"
+sudo docker run --rm -v $(pwd):/k8s-deploy ubuntu:bionic bash -c "cd /k8s-deploy; bash install-k8s.sh"
 
