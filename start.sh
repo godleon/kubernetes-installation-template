@@ -8,4 +8,3 @@ sudo apt-get update
 sudo apt-get install -y docker-ce
 
 sudo docker run --rm -v $(pwd):/k8s-deploy ubuntu:bionic bash -c "cd /k8s-deploy; bash install-k8s.sh"
-

@@ -1,0 +1,1 @@
+kubeconfig should be saved in this directory.
