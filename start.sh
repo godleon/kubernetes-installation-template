@@ -1,4 +1,4 @@
-#!/bib/bash
+#!/bin/bash
 
 # install docker
 sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common

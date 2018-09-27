@@ -1,4 +1,4 @@
-#!/bib/bash
+#!/bin/bash
 
 # upgrade pip
 apt-get update
