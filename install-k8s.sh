@@ -9,6 +9,8 @@ pip3 install --upgrade pip
 rm -rf /srv/kubespray
 cd /srv
 git clone https://github.com/kubernetes-incubator/kubespray.git
+# workaround for calico installation
+sed -i 's/ansible>=2.5.0/ansible==2.6.3/' kubespray/requirements.txt
 cd -
 pip install -r /srv/kubespray/requirements.txt
 
