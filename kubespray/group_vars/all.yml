@@ -15,3 +15,9 @@ etcd_data_dir: /var/lib/etcd
 
 # Directory where the binaries will be installed
 bin_dir: /usr/local/bin
+
+## kubeadm deployment mode
+kubeadm_enabled: true
+
+# Skip alert information
+skip_non_kubeadm_warning: false
