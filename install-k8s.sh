@@ -2,7 +2,7 @@
 
 # upgrade pip
 apt-get update
-apt-get -y install git python3-pip python
+apt-get -y install git python3-pip python sshpass
 pip3 install --upgrade pip
 
 
