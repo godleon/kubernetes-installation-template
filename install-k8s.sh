@@ -23,4 +23,6 @@ cp -r kubespray/* ${BASE_DIR}/inventory/mycluster/
 cd ${BASE_DIR}
 ansible-playbook -b -i inventory/mycluster/hosts.ini cluster.yml
 cd -
-cp ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf kubeconfig/
+if [ -f ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf ]; then
+  cp ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf kubeconfig/
+fi
