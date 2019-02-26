@@ -1,2 +1,3 @@
 ssh-privkey/id_rsa
 kubeconfig
+kubespray/hosts.bak.ini
