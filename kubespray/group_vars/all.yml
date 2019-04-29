@@ -16,8 +16,9 @@ etcd_data_dir: /var/lib/etcd
 # Directory where the binaries will be installed
 bin_dir: /usr/local/bin
 
-## kubeadm deployment mode
-kubeadm_enabled: true
+## Local loadbalancer should use this port
+## And must be set port 6443
+loadbalancer_apiserver_port: 6443
 
-# Skip alert information
-skip_non_kubeadm_warning: false
+## If loadbalancer_apiserver_healthcheck_port variable defined, enables proxy liveness check for nginx.
+loadbalancer_apiserver_healthcheck_port: 8081

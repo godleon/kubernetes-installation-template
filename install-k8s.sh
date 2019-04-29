@@ -11,7 +11,7 @@ rm -rf /srv/kubespray
 cd /srv
 git clone https://github.com/kubernetes-incubator/kubespray.git
 cd /srv/kubespray
-git checkout 9e8e069b2330ef5c8f5d4e1747d29d12596779e8
+git checkout 338eb4ce659f8c4214e75b44b616780e706d9126
 cd -
 
 # workaround for calico installation
