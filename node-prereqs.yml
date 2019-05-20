@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+  - name: Update repositories cache and install "sshpass" package
+    apt:
+      name: "sshpass"
+      update_cache: yes

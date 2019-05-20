@@ -11,7 +11,7 @@ rm -rf /srv/kubespray
 cd /srv
 git clone https://github.com/kubernetes-incubator/kubespray.git
 cd /srv/kubespray
-git checkout 338eb4ce659f8c4214e75b44b616780e706d9126
+git checkout -b v2.10.0
 cd -
 
 # workaround for calico installation
@@ -25,9 +25,13 @@ rm -rf ${BASE_DIR}/inventory/mycluster
 mkdir -p ${BASE_DIR}/inventory/mycluster
 cp -r ${BEG_PATH}/kubespray/* ${BASE_DIR}/inventory/mycluster/
 
+cp -r ${BEG_PATH}/node-prereqs.yml ${BASE_DIR}/node-prereqs.yml
+
 cd ${BASE_DIR}
+ansible-playbook -b -i inventory/mycluster/hosts.ini node-prereqs.yml
 ansible-playbook -b -i inventory/mycluster/hosts.ini cluster.yml
 cd -
 if [ -f ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf ]; then
   cp ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf kubeconfig/
+  cat ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf
 fi
