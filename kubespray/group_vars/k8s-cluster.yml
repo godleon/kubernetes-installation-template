@@ -1,5 +1,5 @@
 # User defined configuration
-# kubeconfig_localhost: true
+kubeconfig_localhost: true
 kube_feature_gates:
   - "TTLAfterFinished=true" 
 kube_apiserver_enable_admission_plugins:

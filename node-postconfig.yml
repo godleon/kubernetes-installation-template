@@ -1,0 +1,35 @@
+---
+
+- hosts: kube-master
+  gather_facts: yes
+  become: yes
+  tasks:
+  - name: "Create kubeconfig directory"
+    block:
+    - name: "Create kubeconfig directory | /root/.kube"
+      file:
+        path: "/root/.kube"
+        state: directory
+        mode: '0755'
+        owner: "root"
+        group: "root"
+    - name: "Create kubeconfig directory | /home/{{ ansible_user }}/.kube"
+      file:
+        path: "/home/{{ ansible_user }}/.kube"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+
+  - name: "Copy kubeconfig"
+    block:
+    - name: "Copy kubeconfig | to root & {{ ansible_user }} home directory"
+      shell: "cp /etc/kubernetes/admin.conf {{ item }}"
+      loop:
+      - "/root/.kube/config"
+      - "/home/{{ ansible_user }}/.kube/config"
+
+    - name: "Copy kubeconfig | change file permission"
+      file:
+        path: "/home/{{ ansible_user }}/.kube/config"
+        owner: "{{ ansible_user }}"
+      

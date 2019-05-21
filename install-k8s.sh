@@ -25,13 +25,24 @@ rm -rf ${BASE_DIR}/inventory/mycluster
 mkdir -p ${BASE_DIR}/inventory/mycluster
 cp -r ${BEG_PATH}/kubespray/* ${BASE_DIR}/inventory/mycluster/
 
-cp -r ${BEG_PATH}/node-prereqs.yml ${BASE_DIR}/node-prereqs.yml
+cp ${BEG_PATH}/node-preconfig.yml ${BASE_DIR}/node-preconfig.yml
+cp ${BEG_PATH}/node-postconfig.yml ${BASE_DIR}/node-postconfig.yml
 
 cd ${BASE_DIR}
-ansible-playbook -b -i inventory/mycluster/hosts.ini node-prereqs.yml
+ansible-playbook -b -i inventory/mycluster/hosts.ini node-preconfig.yml
 ansible-playbook -b -i inventory/mycluster/hosts.ini cluster.yml
-cd -
+
+echo ""
+echo " ---------- Kubernetes has been deployed successfully. ---------- "
+echo ""
+
 if [ -f ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf ]; then
-  cp ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf kubeconfig/
-  cat ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf
+  ansible-playbook -b -i inventory/mycluster/hosts.ini node-postconfig.yml --extra-vars "kubeconfig=${BASE_DIR}/inventory/mycluster/artifacts/admin.conf"
+  
+  cp ${BASE_DIR}/inventory/mycluster/artifacts/admin.conf ${BEG_PATH}/kubeconfig/
+  chmod 666 ${BEG_PATH}/kubeconfig/admin.conf
+  
+  echo ""
+  echo " ---------- Kubernetes configuration has been saved locally. ---------- "
+  echo ""
 fi
