@@ -1,0 +1,6 @@
+---
+
+- name: Update repositories cache and install "sshpass" package
+  apt:
+    name: "sshpass"
+    update_cache: yes

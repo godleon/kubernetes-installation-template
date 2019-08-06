@@ -7,7 +7,7 @@ kube_apiserver_enable_admission_plugins:
   - AlwaysPullImages
   - DefaultStorageClass
 # kubelet_max_pods: 200
-local_path_provisioner_enabled: false
+local_path_provisioner_enabled: true
 
 
 # Kubernetes configuration dirs and system namespace.
@@ -31,7 +31,7 @@ kube_users_dir: "{{ kube_config_dir }}/users"
 kube_api_anonymous_auth: true
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.14.1
+kube_version: v1.15.1
 
 # kubernetes image repo define
 kube_image_repo: "gcr.io/google-containers"

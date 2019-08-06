@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # upgrade pip
 apt-get update
 apt-get -y install git python3-pip python sshpass
@@ -11,7 +13,7 @@ rm -rf /srv/kubespray
 cd /srv
 git clone https://github.com/kubernetes-incubator/kubespray.git
 cd /srv/kubespray
-git checkout -b v2.10.0
+git checkout 4132cee6870cc09e5dff670b536979314f433dd4
 cd -
 
 # workaround for calico installation
@@ -25,7 +27,7 @@ rm -rf ${BASE_DIR}/inventory/mycluster
 mkdir -p ${BASE_DIR}/inventory/mycluster
 cp -r ${BEG_PATH}/kubespray/* ${BASE_DIR}/inventory/mycluster/
 
-cp ${BEG_PATH}/node-preconfig.yml ${BASE_DIR}/node-preconfig.yml
+cp ${BEG_PATH}/node-preconfig*.yml ${BASE_DIR}/
 cp ${BEG_PATH}/node-postconfig.yml ${BASE_DIR}/node-postconfig.yml
 
 cd ${BASE_DIR}

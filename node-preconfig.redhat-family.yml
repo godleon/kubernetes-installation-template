@@ -1,0 +1,65 @@
+---
+
+- name: Update repositories cache and install "sshpass" package
+  yum:
+    name: "sshpass"
+    state: latest
+
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present
+
+
+- name: Enable /proc/sys/net/bridge/bridge-nf-call-iptables
+  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+
+
+- name: Enable IP forward
+  shell: "sysctl -w net.ipv4.ip_forward=1"
+
+
+- name: Disable & stop firewalld service
+  systemd: 
+    name: firewalld 
+    state: stopped
+    enabled: no
+
+# - name: Enable firewalld rules on master nodes
+#   firewalld:
+#     zone: "public"
+#     port: "{{ item }}"
+#     permanent: yes
+#     state: enabled
+#   loop:
+#   - "2379-2380/tcp"
+#   - "6443/tcp"
+#   - "10250/tcp"
+#   - "10251/tcp"
+#   - "10252/tcp"
+#   - "10255/tcp"
+#   - "30000-32767/tcp"
+#   when: ansible_hostname in groups['kube-master']
+
+
+# - name: Enable firewalld rules on worker nodes
+#   firewalld:
+#     zone: "public"
+#     port: "{{ item }}"
+#     permanent: yes
+#     state: enabled
+#   loop:
+#   - "10250/tcp"
+#   - "10255/tcp"
+#   - "30000-32767/tcp"
+#   - "6783/tcp"
+#   when: ansible_hostname in groups['kube-node']
+
+# - name: Reload firewalld rules
+#   shell: "firewall-cmd --reload"

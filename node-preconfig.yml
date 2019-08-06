@@ -4,7 +4,8 @@
   gather_facts: yes
   become: yes
   tasks:
-  - name: Update repositories cache and install "sshpass" package
-    apt:
-      name: "sshpass"
-      update_cache: yes
+  - include_tasks: "{{playbook_dir}}/node-preconfig.debian-family.yml"
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - include_tasks: "{{playbook_dir}}/node-preconfig.redhat-family.yml"
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

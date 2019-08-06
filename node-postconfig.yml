@@ -4,6 +4,10 @@
   gather_facts: yes
   become: yes
   tasks:
+  - name: "Get home directory of user {{ ansible_ssh_user }}"
+    shell: "grep '{{ ansible_ssh_user }}' /etc/passwd | cut -d':' -f6"
+    register: USER_HOME_DIR
+
   - name: "Create kubeconfig directory"
     block:
     - name: "Create kubeconfig directory | /root/.kube"
@@ -13,23 +17,27 @@
         mode: '0755'
         owner: "root"
         group: "root"
-    - name: "Create kubeconfig directory | /home/{{ ansible_user }}/.kube"
+    - name: "Create kubeconfig directory | {{ USER_HOME_DIR.stdout }}/.kube"
       file:
-        path: "/home/{{ ansible_user }}/.kube"
+        path: "{{ USER_HOME_DIR.stdout }}/.kube"
         state: directory
         mode: '0755'
-        owner: "{{ ansible_user }}"
+        owner: "{{ ansible_ssh_user }}"
 
   - name: "Copy kubeconfig"
     block:
-    - name: "Copy kubeconfig | to root & {{ ansible_user }} home directory"
-      shell: "cp /etc/kubernetes/admin.conf {{ item }}"
-      loop:
-      - "/root/.kube/config"
-      - "/home/{{ ansible_user }}/.kube/config"
+    - name: "Copy kubeconfig (for root)"
+      shell: "cp /etc/kubernetes/admin.conf /root/.kube/config"
 
-    - name: "Copy kubeconfig | change file permission"
+    - name: "Copy kubeconfig (for root) | change file permission"
       file:
-        path: "/home/{{ ansible_user }}/.kube/config"
-        owner: "{{ ansible_user }}"
-      
+        path: "/root/.kube/config"
+        owner: "root"
+
+    - name: "Copy kubeconfig (for {{ ansible_ssh_user }})"
+      shell: "cp /etc/kubernetes/admin.conf {{ USER_HOME_DIR.stdout }}/.kube/config"
+
+    - name: "Copy kubeconfig (for {{ ansible_ssh_user }}) | change file permission"
+      file:
+        path: "{{ USER_HOME_DIR.stdout }}/.kube/config"
+        owner: "{{ ansible_ssh_user }}
