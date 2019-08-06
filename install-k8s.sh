@@ -13,6 +13,7 @@ rm -rf /srv/kubespray
 cd /srv
 git clone https://github.com/kubernetes-incubator/kubespray.git
 cd /srv/kubespray
+# updated at 2019-08-05
 git checkout 4132cee6870cc09e5dff670b536979314f433dd4
 cd -
 

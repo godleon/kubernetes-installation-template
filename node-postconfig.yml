@@ -40,4 +40,4 @@
     - name: "Copy kubeconfig (for {{ ansible_ssh_user }}) | change file permission"
       file:
         path: "{{ USER_HOME_DIR.stdout }}/.kube/config"
-        owner: "{{ ansible_ssh_user }}
+        owner: "{{ ansible_ssh_user }}"
